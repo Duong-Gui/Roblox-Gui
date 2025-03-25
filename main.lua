@@ -22,8 +22,6 @@ end
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 ScreenGui.Name = "GiaoDienHack"
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling -- Đảm bảo ZIndex hoạt động đúng
-ScreenGui.ResetOnSpawn = false -- Không reset GUI khi người chơi respawn
 
 -- Tạo khung viền giả (màu vàng, lớn hơn khung chính)
 local KhungVien = Instance.new("Frame")
@@ -31,7 +29,6 @@ KhungVien.Size = UDim2.new(0, 304, 0, 134) -- Viền dày 2px mỗi bên
 KhungVien.Position = UDim2.new(0.5, -152, 0.01, -2) -- Căn giữa
 KhungVien.BackgroundColor3 = Color3.fromRGB(255, 215, 0) -- Màu vàng
 KhungVien.BorderSizePixel = 0
-KhungVien.ZIndex = 100 -- Đặt ZIndex cao để đè lên các GUI khác
 -- Thêm UICorner để bo tròn
 local UICornerVien = Instance.new("UICorner")
 UICornerVien.CornerRadius = UDim.new(0, 12)
@@ -44,7 +41,6 @@ Khung.Size = UDim2.new(0, 300, 0, 130)
 Khung.Position = UDim2.new(0.5, -150, 0.01, 0)
 Khung.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Khung.BorderSizePixel = 0
-Khung.ZIndex = 101 -- Đặt ZIndex cao hơn KhungVien
 -- Thêm UICorner để bo tròn
 local UICorner = Instance.new("UICorner")
 UICorner.CornerRadius = UDim.new(0, 10)
@@ -59,7 +55,6 @@ ThongBaoFrame.AnchorPoint = Vector2.new(1, 1) -- Căn vào góc phải dưới
 ThongBaoFrame.BackgroundColor3 = Color3.fromRGB(50, 150, 255) -- Màu xanh dương nhạt
 ThongBaoFrame.BorderSizePixel = 2
 ThongBaoFrame.BorderColor3 = Color3.fromRGB(255, 215, 0) -- Viền vàng
-ThongBaoFrame.ZIndex = 102 -- Đặt ZIndex cao
 -- Thêm UICorner để bo tròn
 local UICornerThongBao = Instance.new("UICorner")
 UICornerThongBao.CornerRadius = UDim.new(0, 8)
@@ -73,7 +68,6 @@ ThongBaoLabel.BackgroundTransparency = 1
 ThongBaoLabel.Text = "Đã Nâng Cấp Giao Diện Mới Nhất"
 ThongBaoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 ThongBaoLabel.TextScaled = true
-ThongBaoLabel.ZIndex = 103 -- Đặt ZIndex cao hơn ThongBaoFrame
 ThongBaoLabel.Parent = ThongBaoFrame
 
 -- Tự động ẩn thông báo sau 5 giây
@@ -90,7 +84,6 @@ NhanTen.BackgroundTransparency = 1
 NhanTen.Text = "Tên: " .. cheTen(player.Name)
 NhanTen.TextColor3 = Color3.fromRGB(255, 255, 0)
 NhanTen.TextScaled = true
-NhanTen.ZIndex = 104 -- Đặt ZIndex cao
 NhanTen.Parent = Khung
 
 -- Tạo nhãn "Đơn" và ô nhập liệu
@@ -101,7 +94,6 @@ NhanDon.BackgroundTransparency = 1
 NhanDon.Text = "Đơn:"
 NhanDon.TextColor3 = Color3.fromRGB(255, 255, 0)
 NhanDon.TextScaled = true
-NhanDon.ZIndex = 105 -- Đặt ZIndex cao
 NhanDon.Parent = Khung
 
 local ODon = Instance.new("TextBox")
@@ -111,7 +103,6 @@ ODon.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 ODon.TextColor3 = Color3.fromRGB(255, 255, 255)
 ODon.Text = "TUSHITA" -- Giá trị mặc định
 ODon.TextScaled = true
-ODon.ZIndex = 106 -- Đặt ZIndex cao
 ODon.Parent = Khung
 
 -- Tạo nút "Xóa" cho phần "Đơn"
@@ -124,7 +115,6 @@ NutXoa.TextColor3 = Color3.fromRGB(255, 255, 255)
 NutXoa.TextScaled = true
 NutXoa.BorderSizePixel = 2 -- Thêm viền
 NutXoa.BorderColor3 = Color3.fromRGB(255, 255, 255) -- Viền trắng
-NutXoa.ZIndex = 107 -- Đặt ZIndex cao
 -- Thêm UICorner để bo tròn
 local UICornerXoa = Instance.new("UICorner")
 UICornerXoa.CornerRadius = UDim.new(0, 8) -- Bo tròn 8px
@@ -148,7 +138,6 @@ NhanServer.BackgroundTransparency = 1
 NhanServer.Text = "Server ID:"
 NhanServer.TextColor3 = Color3.fromRGB(255, 255, 0)
 NhanServer.TextScaled = true
-NhanServer.ZIndex = 108 -- Đặt ZIndex cao
 NhanServer.Parent = Khung
 
 local OServer = Instance.new("TextBox")
@@ -159,7 +148,6 @@ OServer.TextColor3 = Color3.fromRGB(255, 255, 255)
 OServer.Text = ""
 OServer.PlaceholderText = "Nhập ID Server"
 OServer.TextScaled = true
-OServer.ZIndex = 109 -- Đặt ZIndex cao
 OServer.Parent = Khung
 
 -- Tạo nút "Chuyển Server"
@@ -172,7 +160,6 @@ NutChuyen.TextColor3 = Color3.fromRGB(255, 255, 255)
 NutChuyen.TextScaled = true
 NutChuyen.BorderSizePixel = 2 -- Thêm viền
 NutChuyen.BorderColor3 = Color3.fromRGB(255, 255, 255) -- Viền trắng
-NutChuyen.ZIndex = 110 -- Đặt ZIndex cao
 -- Thêm UICorner để bo tròn
 local UICornerChuyen = Instance.new("UICorner")
 UICornerChuyen.CornerRadius = UDim.new(0, 8) -- Bo tròn 8px

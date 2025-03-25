@@ -1,3 +1,4 @@
+
 -- Chờ game load xong và người chơi xuất hiện
 repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
 
@@ -182,61 +183,61 @@ NutChuyen.Parent = Khung
 -- Thêm hiệu ứng hover cho nút "Chuyển"
 local originalColorChuyen = NutChuyen.BackgroundColor3
 NutChuyen.MouseEnter:Connect(function()
-    NutChuyen.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Sáng hơn khi hover
+    NutChuyen.BackgroundColor3 = Color3.fromRGB(20, 220, 20) -- Sáng hơn khi hover
 end)
 NutChuyen.MouseLeave:Connect(function()
     NutChuyen.BackgroundColor3 = originalColorChuyen -- Trở về màu gốc
 end)
 
--- Kiểm tra và chuyển server theo ID
-local function isValidUUID(id)
-    local pattern = "^[a-f0-9-]+$"
-    return string.match(id, pattern) ~= nil and #id == 36
+-- Lưu nội dung "Đơn" vào file riêng cho từng tài khoản
+local tenFile = "DonText_" .. player.Name .. ".json" -- File sẽ có dạng DonText_tennguoichoi.json
+local HttpService = game:GetService("HttpService")
+
+-- Hàm lưu nội dung "Đơn" vào file
+local function luuNoiDungDon()
+    local noiDung = ODon.Text
+    pcall(function()
+        writefile(tenFile, HttpService:JSONEncode({don = noiDung}))
+        print("Đã lưu nội dung Đơn vào file " .. tenFile .. ": " .. noiDung)
+    end)
 end
 
 -- Hàm tải nội dung "Đơn" từ file
 local function taiNoiDungDon()
-    local contentFile = game:GetService("ReplicatedStorage"):WaitForChild("DonContentFile") -- Giả sử có một file lưu trong ReplicatedStorage
-    if contentFile then
-        ODon.Text = contentFile.Value -- Tải nội dung từ file
-    else
-        warn("Không tìm thấy file nội dung đơn!")
-    end
+    local noiDung = "............" -- Giá trị mặc định nếu không có file
+    pcall(function()
+        if isfile(tenFile) then
+            local data = HttpService:JSONDecode(readfile(tenFile))
+            noiDung = data.don or "TUSHITA"
+        end
+    end)
+    ODon.Text = noiDung
 end
 
--- Tải nội dung "Đơn" khi script chạy
-taiNoiDungDon()
+-- Khi nội dung "Đơn" thay đổi, tự động lưu vào file
+ODon:GetPropertyChangedSignal("Text"):Connect(function()
+    luuNoiDungDon()
+end)
 
--- Gọi vào khi nút "Chuyển" được nhấn
+-- Nút "Xóa" để xóa nội dung "Đơn" và cập nhật file
+NutXoa.MouseButton1Click:Connect(function()
+    ODon.Text = ""
+    luuNoiDungDon()
+end)
+
+-- Chuyển server theo ID
+local TeleportService = game:GetService("TeleportService")
 NutChuyen.MouseButton1Click:Connect(function()
     local serverId = OServer.Text
     if serverId and serverId ~= "" then
-        if isValidUUID(serverId) then
-            -- Nếu ID là UUID hợp lệ, sử dụng TeleportService
-            local success, message = pcall(function()
-                TeleportService:TeleportToPlaceInstance(game.PlaceId, serverId, player)
-            end)
-            
-            if success then
-                print("Chuyển server thành công bằng UUID.")
-            else
-                warn("Chuyển server thất bại bằng UUID: " .. message)
-            end
-        else
-            -- Nếu ID là dạng Script ID, sử dụng ReplicatedStorage để teleport
-            local success, message = pcall(function()
-                game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer("teleport", serverId)
-            end)
-            
-            if success then
-                print("Chuyển server thành công bằng Script ID.")
-            else
-                warn("Chuyển server thất bại bằng Script ID: " .. message)
-            end
-        end
+        -- Chuyển đến server theo ID
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, serverId, player)
     else
         warn("Vui lòng nhập ID Server hợp lệ!")
     end
 end)
+
+-- Tải nội dung "Đơn" từ file khi script chạy
+taiNoiDungDon()
 
 print("Hack Blox Fruits đã chạy! Menu BananaHub đã được mở.")
